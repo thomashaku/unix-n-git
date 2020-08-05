@@ -1,0 +1,98 @@
+1. Basic Git Workflow
+"$ git init"
+	set up all the tools Git needs to begin tracking changes
+	"Initialized empty Git repository in <location>"
+	-> run bash in your current working folder to make it a git folder
+Git Workflow
+	Git project: 
+		working directory: make changes to files (add/delete/modify)
+		staging area: files ready for commit
+		repository: changes saved here as a commit
+	git init -> working directory -> git add -> staging area -> git commit -> repository
+"$ git status"
+	shows untracked files and file changes staged for commit
+	Untracked files: Git sees the file but has not started tracking changes yet -> "git add", or list it in a .gitignore file
+"$ git add <file>"
+	in git status, it shows as "changes to be committed"
+"$ git diff <file>"
+	white: same as the file already in the staging area
+	green with "+": newly added lines
+"$ git commit (-m "<message>")"
+	permanently store changes
+	message:
+		50 chars or less
+		present tense
+		in quotation marks
+"$ git log"
+	contains SHA, author, data time, commit message
+
+set up Git and link to GitHub
+also link local to GitHub repository
+	see PDF
+
+2. How to Backtrack
+three types
+	unstage, discard changes in the working directory, roll back to previous commit
+"$ git show HEAD"
+	HEAD: the commit you are currently on / most recent
+	show the same as "git log" for HEAD + all the committed file changes
+"$ git checkout HEAD <file>"
+	restore a file in the working directory to look as it did in the last commit
+"$ git add <fileA> <fileB> <...>"
+	add multiple files to the staging area
+	"$ git add .": add all files
+"$ git reset HEAD <file>"
+	used for the following case:
+		you added file A, B to staging area already
+		you accidentally modified file C
+		you also added file C to staging area
+		now you want to exclude it from commit by unstage it 
+	changes still exist in the working directory though -> checkout
+"$ git reset <commit_SHA>"
+	replace HEAD with the first 7 characters of the SHA of a previous commit
+		use "$ git log" to see all
+		commits after/later than one that you reset are all gone
+		HEAD is also reassigned to current SHA
+		a-b-c-d-HEAD -> reset c -> a-b-HEAD
+	changes still exist in the working directory though -> checkout
+
+
+3. Git branching
+up to now, always work in a single git branch "master"
+"$ git branch( <name>))" 
+	if omitted, print all branch names, "*" is current one
+"$ git checkout <name>"
+	switch between branches
+	from now on changes are made to child branches, master stays intact
+"$ git merge <name>"
+	merging the branch into master
+	need to switch to "master" use "checkout" first
+	conflicts
+		arises when before merging, there are changes to master
+		when this happen reopen file to see notes made by git
+			<<<<<
+			...
+			=====
+			...
+			>>>>>
+		manually modify "..." then delete everything else
+		then re-add to the staging area (should be in master)
+		then commit: -m "resolve merge conflict"
+"$ git branch -d <name>"
+	delete a branch, usually after it gets merged
+	-D if don't want to merge
+
+4. Git Teamwork
+"$ git clone <remote location> <clone name>"
+"$ git remote -v"
+	list a Git project's remote
+	must be in a git folder to run this
+	the remote is automatically named as "origin"
+	has fetch and push location, often the same
+"$ git fetch"
+	check the remote and update your clone, i.e. fetch any new commits on remote
+	hasn't merge changes...yet
+		"$ git merge origin/master"
+		name may change, now it's master -> master
+"$ git push origin <your branch>"
+	allow the remote to review your code
